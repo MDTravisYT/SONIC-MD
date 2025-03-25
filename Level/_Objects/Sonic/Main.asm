@@ -607,7 +607,8 @@ ObjSonic_TimeWarp:
 	bcs.s	.KeepGoing			; If not, branch
 
 	move.b	#1,levelRestart			; Set to go to the time warp cutscene
-	jsr		FadeOutMusic
+	move.b	#$E0, d0	;	fade out music
+	jsr		PlayFMSound
 
 .KeepGoing:
 	cmpi.w	#210,d1				; Are we about to time warp soon?
