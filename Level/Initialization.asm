@@ -15,7 +15,17 @@ RAM_END			EQU	$1000000		; Work RAM end
 	; (ADDED) 68000 vector table
 	dc.l	$FFFD00					; Stack pointer (taken from Sega CD BIOS)
 	dc.l	JmpTo_Start				; Entry point
-	dcb.l	$1A, JmpTo_Error			; Exceptions
+	dc.l BusError		; Bus error
+	dc.l AddressError	; Address error (4)
+	dc.l IllegalInstr	; Illegal instruction
+	dc.l ZeroDivide		; Division by zero
+	dc.l ChkInstr		; CHK exception
+	dc.l TrapvInstr		; TRAPV exception (8)
+	dc.l PrivilegeViol	; Privilege violation
+	dc.l Trace			; TRACE exception
+	dc.l Line1010Emu	; Line-A emulator
+	dc.l Line1111Emu	; Line-F emulator (12)
+	dcb.l	$10, JmpTo_Error			; Exceptions
 	dc.l	JmpTo_HInt				; H-INT
 	dc.l	JmpTo_Error				; IRQ5
 	dc.l	JmpTo_VInt				; V-INT
