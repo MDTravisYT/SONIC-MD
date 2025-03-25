@@ -130,18 +130,25 @@ Start:
 	move.b	#1,(timeZone).l			; (ADDED) Set time zone to present
 	move.b	#0,gameMode.w			; Set game mode to "level"
 
+	move.b	#0,gameMode.w	
+MainGameLoop:
 	move.b	gameMode.w,d0			; Go to the current game mode routine
-	andi.w	#$1C,d0
-	jsr	GameModes(pc,d0.w)
-	
-	clr.w	(zone).l				; (ADDED) Reset zone ID
-	bra.s	.GameInit				; (ADDED) Restart
+	andi.w	#%00011100,d0
+	jsr		@index(pc,d0.w)
+	bra.s	MainGameLoop		
 
 ; -------------------------------------------------------------------------
 ; Game modes
 ; -------------------------------------------------------------------------
-
-GameModes:
-	bra.w	LevelStart			; Level
-
+	@index:
+		bra.w	LOGO_Jmp
+		bra.w	Title_Jmp
+		bra.w	LevelStart			; Level
+;	Define Game mode constants
+GM_LOGO		=	0
+GM_TITLE	=	GM_LOGO+4
+GM_LEVEL	=	GM_TITLE+4
+; -------------------------------------------------------------------------
+LOGO_Jmp:	jmp		LOGO				; SEGA
+Title_Jmp:	jmp		TITLE				; Title
 ; -------------------------------------------------------------------------

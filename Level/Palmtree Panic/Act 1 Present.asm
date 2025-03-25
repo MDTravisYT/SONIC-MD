@@ -5,11 +5,7 @@
 ; Palmtree Panic Act 1 Present
 ; -------------------------------------------------------------------------
 
-	include	"Level/_Definitions.i"
-
 ; -------------------------------------------------------------------------
-ROM_START:
-	include	"Level/Initialization.asm"
 	include	"Level/Palmtree Panic/Palette Cycle (Present).asm"
 	include	"Level/Palette Fade.asm"
 	include	"Level/Palette Load (Fade).asm"
