@@ -136,6 +136,8 @@ Start:
 	bsr.w	InitVDP				; Initialize VDP
 	jsr		LoadSoundDriver				; Initialize sound driver
 	bsr.w	InitControllers			; Initialize joypads
+	
+	move.w	#$8100+%01110100,(VDPCTRL)      ;	Enable display
 
 	move.b	#1,(timeZone).l			; (ADDED) Set time zone to present
 	move.b	#0,gameMode.w			; Set game mode to "level"

@@ -7,6 +7,7 @@ set CHECKSUM=_Bin\fixheadr.exe
 
 %ASM68K% /e DEMO=0 "Main.asm", "SONIC-MD.BIN", , "SONIC-MD.LST" > SONIC-MD.LOG
 if %ERRORLEVEL% equ 0 goto noerror
+color 0c
 type SONIC-MD.LOG
 pause
 exit

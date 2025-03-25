@@ -67,6 +67,9 @@ LevelStart:
 
 .FromSpecialStage:
 	bsr.w	FadeToWhite			; Fade to white
+	
+	move.b	#GM_WARP, gamemode.w
+	
 	bclr	#0,palFadeFlags			; Mark palette fading as inactive
 
 .SkipFade:
