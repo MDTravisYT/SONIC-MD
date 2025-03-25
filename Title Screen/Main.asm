@@ -370,7 +370,7 @@ VInterrupt:
 	lea	VDPDATA,a2			; VDP data port
 	move.w	(a1),d0				; Reset V-BLANK flag
 
-	jsr	StopZ80(pc)			; Stop the Z80
+	jsr	StopZ80_old(pc)			; Stop the Z80
 	DMA68K	palette,$0000,$80,CRAM		; Copy palette data
 	DMA68K	hscroll,$D000,$380,VRAM		; Copy horizontal scroll data
 
@@ -441,7 +441,7 @@ VInt_Finish:
 	clr.b	fmSndQueue.w			; Clear sound queue
 
 .NoSound:
-	bsr.w	StartZ80			; Start the Z80
+	bsr.w	StartZ80_old			; Start the Z80
 	
 	tst.w	timer.w				; Is the timer running?
 	beq.s	.NoTimer			; If not, branch
@@ -810,7 +810,7 @@ InitMD:
 	move.b	d0,IOCTRL3
 	move.b	#$C0,IODATA1
 
-	jsr	StopZ80(pc)			; Stop the Z80
+	jsr	StopZ80_old(pc)			; Stop the Z80
 
 	DMAFILL	0,$10000,0			; Clear VRAM
 
@@ -826,7 +826,7 @@ InitMD:
 	VDPCMD	move.l,0,VSRAM,WRITE,VDPCTRL	; Clear VSRAM
 	move.l	#0,VDPDATA
 
-	jsr	StartZ80(pc)			; Start the Z80
+	jsr	StartZ80_old(pc)			; Start the Z80
 	move.w	#$8134,ipxVDPReg1		; Reset IPX VDP register 1 cache
 	rts
 
@@ -872,7 +872,7 @@ Pal_Title:
 ; Stop the Z80
 ; -------------------------------------------------------------------------
 
-StopZ80:
+StopZ80_old:
 	move	sr,savedSR.w			; Save status register
 	move	#$2700,sr			; Disable interrupts
 	Z80STOP					; Stop the Z80
@@ -882,7 +882,7 @@ StopZ80:
 ; Start the Z80
 ; -------------------------------------------------------------------------
 
-StartZ80:
+StartZ80_old:
 	Z80START				; Start the Z80
 	move	savedSR.w,sr			; Restore status register
 	rts

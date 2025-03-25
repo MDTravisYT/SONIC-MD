@@ -1373,9 +1373,9 @@ RunMMD:
 	jsr	(a0)				; Run file
 	move.b	d0,mmdReturnCode		; Set return code
 
-	bsr.w	StopZ80				; Stop the Z80
+	bsr.w	StopZ80_old				; Stop the Z80
 	move.b	#FMC_STOP,FMDrvQueue2		; Stop FM sound
-	bsr.w	StartZ80			; Start the Z80
+	bsr.w	StartZ80_old			; Start the Z80
 
 	move.b	#0,ipxVSync			; Clear VSync flag
 	move.l	#BlankInt,_LEVEL4+2.w		; Reset H-INT address
@@ -1523,7 +1523,7 @@ GiveWordRAMAccess:
 ; Stop the Z80
 ; -------------------------------------------------------------------------
 
-StopZ80:
+StopZ80_old:
 	move	sr,savedSR			; Save status register
 	move	#$2700,sr			; Disable interrupts
 	Z80STOP					; Stop the Z80
@@ -1533,7 +1533,7 @@ StopZ80:
 ; Start the Z80
 ; -------------------------------------------------------------------------
 
-StartZ80:
+StartZ80_old:
 	Z80START				; Start the Z80
 	move	savedSR,sr			; Restore status register
 	rts

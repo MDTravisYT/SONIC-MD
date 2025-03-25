@@ -123,9 +123,9 @@ MainLoop:
 	cmpi.w	#7,cddaSelID
 	bne.s	.Exit
 	
-	bsr.w	StopZ80				; Play warp sound
+	bsr.w	StopZ80_old				; Play warp sound
 	move.b	#FM_SSWARP,FMDrvQueue2
-	bsr.w	StartZ80
+	bsr.w	StartZ80_old
 
 	bsr.w	FadeToWhite			; Fade to white
 	moveq	#1,d0
@@ -158,10 +158,10 @@ SelectFM:
 	andi.b	#%1110000,d0
 	beq.s	.End				; If not, branch
 
-	bsr.w	StopZ80				; Play sound
+	bsr.w	StopZ80_old				; Play sound
 	move.w	fmSelID,d0
 	move.b	.IDs(pc,d0.w),FMDrvQueue2
-	bsr.w	StartZ80
+	bsr.w	StartZ80_old
 
 .End:
 	rts
@@ -656,7 +656,7 @@ VInterrupt:
 	bset	#6,ipxVDPReg1+1			; Enable display
 	move.w	ipxVDPReg1,VDPCTRL
 	
-	bsr.w	StopZ80				; Stop the Z80
+	bsr.w	StopZ80_old				; Stop the Z80
 	move.w	VDPCTRL,d0			; Reset V-BLANK flag
 
 	bclr	#1,ipxVSync			; Should we update CRAM?
@@ -665,7 +665,7 @@ VInterrupt:
 
 .NoCRAMUpdate:
 	jsr	ReadController(pc)		; Read controller
-	bsr.w	StartZ80			; Start the Z80
+	bsr.w	StartZ80_old			; Start the Z80
 
 .End:
 	movem.l	(sp)+,d0-a6			; Restore registers

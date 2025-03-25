@@ -45,7 +45,7 @@ Start:
 	dbf	d7,.ClearCRAM
 	
 	Z80RESOFF				; Set Z80 reset off
-	bsr.w	StopZ80				; Stop the Z80
+	bsr.w	StopZ80_old				; Stop the Z80
 
 	lea	FMSFXDriver(pc),a0		; Load FM SFX sound driver
 	lea	Z80RAM,a1
@@ -57,7 +57,7 @@ Start:
 
 	Z80RESON				; Set Z80 reset on
 	Z80RESOFF				; Set Z80 reset off
-	bsr.w	StartZ80			; Start the Z80
+	bsr.w	StartZ80_old			; Start the Z80
 
 	move.b	#%10010000,titleFlags		; Set title screen flags
 	rts
@@ -166,7 +166,7 @@ InitMD:
 	move.b	d0,IOCTRL3
 	move.b	#$C0,IODATA1
 
-	bsr.w	StopZ80				; Stop the Z80
+	bsr.w	StopZ80_old				; Stop the Z80
 
 	VDPCMD	move.l,0,VRAM,WRITE,VDPCTRL	; Clear VRAM
 	lea	VDPDATA,a0
@@ -182,7 +182,7 @@ InitMD:
 	VDPCMD	move.l,0,VSRAM,WRITE,VDPCTRL	; Reset vertical scroll data
 	move.l	#0,VDPDATA
 
-	bsr.w	StartZ80			; Start the Z80
+	bsr.w	StartZ80_old			; Start the Z80
 	move.w	#$8134,ipxVDPReg1		; Reset IPX VDP register 1 cache
 	rts
 
@@ -190,7 +190,7 @@ InitMD:
 ; Stop the Z80
 ; -------------------------------------------------------------------------
 
-StopZ80:
+StopZ80_old:
 	move	sr,savedSR			; Save status register
 	move	#$2700,sr			; Disable interrupts
 	Z80STOP					; Stop the Z80
@@ -200,7 +200,7 @@ StopZ80:
 ; Start the Z80
 ; -------------------------------------------------------------------------
 
-StartZ80:
+StartZ80_old:
 	Z80START				; Start the Z80
 	move	savedSR,sr			; Restore status register
 	rts

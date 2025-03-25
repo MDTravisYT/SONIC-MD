@@ -38,14 +38,14 @@ Random:
 ; -------------------------------------------------------------------------
 
 InitControllers:
-	bsr.w	StopZ80				; Stop the Z80
+	bsr.w	StopZ80_old				; Stop the Z80
 
 	moveq	#$40,d0				; Initialize controller ports
 	move.b	d0,IOCTRL1
 	move.b	d0,IOCTRL2
 	move.b	d0,IOCTRL3
 
-	bra.w	StartZ80			; Start the Z80
+	bra.w	StartZ80_old			; Start the Z80
 
 ; -------------------------------------------------------------------------
 ; Read joypad data
@@ -232,7 +232,7 @@ ClearScreen:
 ; Stop the Z80
 ; -------------------------------------------------------------------------
 
-StopZ80:
+StopZ80_old:
 	move	sr,savedSR.w			; Save SR
 	move	#$2700,sr			; Disable interrupts
 	move.w	#$100,Z80BUS			; Stop the Z80
@@ -246,7 +246,7 @@ StopZ80:
 ; Start the Z80
 ; -------------------------------------------------------------------------
 
-StartZ80:
+StartZ80_old:
 	move.w	#0,Z80BUS			; Start the Z80
 	move	savedSR.w,sr			; Restore SR
 	rts
@@ -257,7 +257,7 @@ StartZ80:
 
 InitZ80Dummy:
 	move.w	#$100,Z80RESET			; Stop Z80 reset
-	jsr	StopZ80(pc)			; Stop the Z80
+	jsr	StopZ80_old(pc)			; Stop the Z80
 
 	lea	Z80RAM,a1			; Prepare Z80 RAM
 	move.b	#$F3,(a1)+			; di
@@ -269,7 +269,7 @@ InitZ80Dummy:
 	move.w	#0,Z80RESET			; Reset the Z80
 	ror.b	#8,d0				; Wait
 	move.w	#$100,Z80RESET			; Stop Z80 reset
-	jmp	StartZ80(pc)			; Start the Z80
+	jmp	StartZ80_old(pc)			; Start the Z80
 	rts
 
 ; -------------------------------------------------------------------------
@@ -308,7 +308,7 @@ PlayFMSound:
 ; -------------------------------------------------------------------------
 
 UpdateFMQueues:
-	jsr	StopZ80				; Stop the Z80
+	jsr	StopZ80_old				; Stop the Z80
 
 	if (REGION=USA)|((REGION<>USA)&(DEMO=0))
 		tst.b	fmSndQueue1.w		; Update queue 1
@@ -331,12 +331,12 @@ UpdateFMQueues:
 .End:
 	else
 		tst.b	fmSndQueue2.w		; Update queues
-		beq.w	StartZ80
+		beq.w	StartZ80_old
 		move.b	fmSndQueue2.w,FMDrvQueue1
 		move.b	fmSndQueue3.w,fmSndQueue2.w
 		move.b	#0,fmSndQueue3.w
 	endif
-	bra.w	StartZ80			; Start the Z80
+	bra.w	StartZ80_old			; Start the Z80
 
 ; -------------------------------------------------------------------------
 ; Draw a tilemap

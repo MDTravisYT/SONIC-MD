@@ -431,7 +431,7 @@ InitMD:
 	move.b	d0,IOCTRL3
 	move.b	#$C0,IODATA1
 
-	bsr.w	StopZ80				; Stop the Z80
+	bsr.w	StopZ80_old				; Stop the Z80
 
 	VDPCMD	move.l,0,VRAM,WRITE,VDPCTRL	; Clear VRAM
 	lea	VDPDATA,a0
@@ -448,7 +448,7 @@ InitMD:
 	VDPCMD	move.l,0,VSRAM,WRITE,VDPCTRL	; Clear VSRAM
 	move.l	#0,VDPDATA
 
-	bsr.w	StartZ80			; Start the Z80
+	bsr.w	StartZ80_old			; Start the Z80
 	move.w	#$8134,ipxVDPReg1		; Reset IPX VDP register 1 cache
 	rts
 
@@ -903,7 +903,7 @@ EniDec_ChkGetNextByte:
 ; Stop the Z80
 ; -------------------------------------------------------------------------
 
-StopZ80:
+StopZ80_old:
 	move	sr,savedSR.w			; Save status register
 	move	#$2700,sr			; Disable interrupts
 	Z80STOP					; Stop the Z80
@@ -913,7 +913,7 @@ StopZ80:
 ; Start the Z80
 ; -------------------------------------------------------------------------
 
-StartZ80:
+StartZ80_old:
 	Z80START				; Start the Z80
 	move	savedSR.w,sr			; Restore status register
 	rts

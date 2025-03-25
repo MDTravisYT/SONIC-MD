@@ -607,7 +607,7 @@ ObjSonic_TimeWarp:
 	bcs.s	.KeepGoing			; If not, branch
 
 	move.b	#1,levelRestart			; Set to go to the time warp cutscene
-	bra.w	FadeOutMusic
+	jsr		FadeOutMusic
 
 .KeepGoing:
 	cmpi.w	#210,d1				; Are we about to time warp soon?
@@ -2459,9 +2459,9 @@ ObjSonic_Restart:
 
 	move.w	#1,levelRestart			; Set to restart the level
 
-	jsr	StopZ80				; Allow conditional jumps to jump in FM sound effects
+	jsr	StopZ80_old				; Allow conditional jumps to jump in FM sound effects
 	move.b	#1,Z80RAM+$1C3E
-	jsr	StartZ80
+	jsr	StartZ80_old
 
 	bsr.w	ResetSavedObjFlags		; Reset saved object flags
 	clr.l	flowerCount			; Reset flower count

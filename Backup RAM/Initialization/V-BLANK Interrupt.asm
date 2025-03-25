@@ -20,7 +20,7 @@ VInterrupt:
 	lea	VDPCTRL,a1			; VDP control port
 	lea	VDPDATA,a2			; VDP data port
 	move.w	(a1),d0				; Reset V-INT occurance flag
-	jsr	StopZ80(pc)			; Stop the Z80
+	jsr	StopZ80_old(pc)			; Stop the Z80
 
 	move.w	vintRoutine.w,d0		; Execute routine
 	add.w	d0,d0
@@ -40,7 +40,7 @@ VInterrupt:
 	bra.w	.Main2
 
 .Main2:
-	bsr.w	StartZ80			; Start the Z80
+	bsr.w	StartZ80_old			; Start the Z80
 	tst.w	timer.w				; Is the timer active?
 	beq.s	.NoTimer			; If not, branch
 	subq.w	#1,timer.w			; Decrement timer

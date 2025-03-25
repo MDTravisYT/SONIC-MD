@@ -154,9 +154,9 @@ SoundTest_Exit:
 ; -------------------------------------------------------------------------
 
 SoundTest_SpecStg8:
-	bsr.w	StopZ80				; Play sound
+	bsr.w	StopZ80_old				; Play sound
 	move.b	#FM_RINGL,FMDrvQueue2
-	bsr.w	StartZ80
+	bsr.w	StartZ80_old
 
 	lea	Text_SpecStg8(pc),a0		; Draw text
 	move.w	#$6000,d0
@@ -168,9 +168,9 @@ SoundTest_SpecStg8:
 	bsr.w	VSync
 	dbf	d7,.Wait
 
-	bsr.w	StopZ80				; Play warp sound
+	bsr.w	StopZ80_old				; Play warp sound
 	move.b	#FM_SSWARP,FMDrvQueue2
-	bsr.w	StartZ80
+	bsr.w	StartZ80_old
 
 	bsr.w	FadeToWhite			; Fade to white
 	moveq	#1,d0
@@ -179,9 +179,9 @@ SoundTest_SpecStg8:
 ; -------------------------------------------------------------------------
 
 SoundTest_FunIsInf:
-	bsr.w	StopZ80				; Play warp sound
+	bsr.w	StopZ80_old				; Play warp sound
 	move.b	#FM_SSWARP,FMDrvQueue2
-	bsr.w	StartZ80
+	bsr.w	StartZ80_old
 
 	bsr.w	FadeToWhite			; Fade to white
 	moveq	#2,d0
@@ -190,9 +190,9 @@ SoundTest_FunIsInf:
 ; -------------------------------------------------------------------------
 
 SoundTest_MCSonic:
-	bsr.w	StopZ80				; Play warp sound
+	bsr.w	StopZ80_old				; Play warp sound
 	move.b	#FM_SSWARP,FMDrvQueue2
-	bsr.w	StartZ80
+	bsr.w	StartZ80_old
 
 	bsr.w	FadeToWhite			; Fade to white
 	moveq	#3,d0
@@ -201,9 +201,9 @@ SoundTest_MCSonic:
 ; -------------------------------------------------------------------------
 
 SoundTest_Tails:
-	bsr.w	StopZ80				; Play warp sound
+	bsr.w	StopZ80_old				; Play warp sound
 	move.b	#FM_SSWARP,FMDrvQueue2
-	bsr.w	StartZ80
+	bsr.w	StartZ80_old
 
 	bsr.w	FadeToWhite			; Fade to white
 	moveq	#4,d0
@@ -214,9 +214,9 @@ SoundTest_Tails:
 ; -------------------------------------------------------------------------
 
 SoundTest_Batman:
-	bsr.w	StopZ80				; Play warp sound
+	bsr.w	StopZ80_old				; Play warp sound
 	move.b	#FM_SSWARP,FMDrvQueue2
-	bsr.w	StartZ80
+	bsr.w	StartZ80_old
 
 	bsr.w	FadeToWhite			; Fade to white
 	moveq	#5,d0
@@ -225,9 +225,9 @@ SoundTest_Batman:
 ; -------------------------------------------------------------------------
 
 SoundTest_CuteSonic:
-	bsr.w	StopZ80				; Play warp sound
+	bsr.w	StopZ80_old				; Play warp sound
 	move.b	#FM_SSWARP,FMDrvQueue2
-	bsr.w	StartZ80
+	bsr.w	StartZ80_old
 
 	bsr.w	FadeToWhite			; Fade to white
 	moveq	#6,d0
@@ -297,10 +297,10 @@ SelectFM:
 	andi.b	#%1110000,d0
 	beq.s	.End				; If not, branch
 
-	bsr.w	StopZ80				; Play sound
+	bsr.w	StopZ80_old				; Play sound
 	move.w	fmSelID,d0
 	move.b	.IDs(pc,d0.w),FMDrvQueue2
-	bsr.w	StartZ80
+	bsr.w	StartZ80_old
 
 .End:
 	rts
@@ -933,7 +933,7 @@ VInterrupt:
 	bset	#6,ipxVDPReg1+1			; Enable display
 	move.w	ipxVDPReg1,VDPCTRL
 	
-	bsr.w	StopZ80				; Stop the Z80
+	bsr.w	StopZ80_old				; Stop the Z80
 	move.w	VDPCTRL,d0			; Reset V-BLANK flag
 
 	bclr	#1,ipxVSync			; Should we update CRAM?
@@ -942,7 +942,7 @@ VInterrupt:
 
 .NoCRAMUpdate:
 	jsr	ReadController(pc)		; Read controller
-	bsr.w	StartZ80			; Start the Z80
+	bsr.w	StartZ80_old			; Start the Z80
 
 .End:
 	movem.l	(sp)+,d0-a6			; Restore registers

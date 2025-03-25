@@ -263,9 +263,9 @@ MainLoop:
 	move.l	d0,GACOMCMD8
 	move.l	d0,GACOMCMDC
 
-	bsr.w	StopZ80				; Play warp sound
+	bsr.w	StopZ80_old				; Play warp sound
 	move.b	#FM_SSWARP,FMDrvQueue1+1
-	bsr.w	StartZ80
+	bsr.w	StartZ80_old
 	
 	btst	#2,flagsCopy.w			; Were we in the secret special stage?
 	beq.s	.FadeToBlack			; If not, branch
@@ -381,9 +381,9 @@ Results_MainLoop:
 	bne.s	.NoKaChing			; If not, branch
 	move.b	#1,scoreTallied			; Mark score as tallied
 	
-	bsr.w	StopZ80				; Play ka-ching sound
+	bsr.w	StopZ80_old				; Play ka-ching sound
 	move.b	#FM_KACHING,FMDrvQueue1+1
-	bsr.w	StartZ80
+	bsr.w	StartZ80_old
 
 .NoKaChing:
 	btst	#7,ctrlTap			; Has the start button been pressed?
@@ -396,9 +396,9 @@ Results_MainLoop:
 	add.l	timeBonus,d0
 	bsr.w	AddScore
 	
-	bsr.w	StopZ80				; Play warp sound
+	bsr.w	StopZ80_old				; Play warp sound
 	move.b	#FM_SSWARP,FMDrvQueue1+1
-	bsr.w	StartZ80
+	bsr.w	StartZ80_old
 	bsr.w	FadeToWhite			; Fade to white
 	rts
 
@@ -893,7 +893,7 @@ VInterrupt:
 	lea	VDPDATA,a2			; VDP data port
 	move.w	(a1),d0				; Reset V-BLANK flag
 
-	jsr	StopZ80(pc)			; Stop the Z80
+	jsr	StopZ80_old(pc)			; Stop the Z80
 
 	bclr	#1,ipxVSync			; Clear CRAM update flag
 	beq.s	.Update				; If it wasn't set, branch
@@ -983,7 +983,7 @@ VInt_Paused:
 ; -------------------------------------------------------------------------
 
 VInt_Finish:
-	bsr.w	StartZ80			; Start the Z80
+	bsr.w	StartZ80_old			; Start the Z80
 
 	tst.w	resultsTimer.w			; Is the results screen timer running?
 	beq.s	.NoTimer			; If not, branch
@@ -2659,7 +2659,7 @@ SubCPUCmd:
 ; -------------------------------------------------------------------------
 
 PlayFMSound:
-	bsr.w	StopZ80				; Stop the Z80
+	bsr.w	StopZ80_old				; Stop the Z80
 	tst.b	FMDrvQueue1+1			; Is queue 1 full?
 	bne.s	.CheckQueue2			; If so, branch
 	move.b	d0,FMDrvQueue1+1		; Set ID in queue 1
@@ -2677,7 +2677,7 @@ PlayFMSound:
 	move.b	d0,FMDrvQueue3+1		; Set ID in queue 3
 
 .End:
-	bsr.w	StartZ80			; Start the Z80
+	bsr.w	StartZ80_old			; Start the Z80
 	rts
 	
 ; -------------------------------------------------------------------------
@@ -2685,11 +2685,11 @@ PlayFMSound:
 ; -------------------------------------------------------------------------
 
 PlaySubFMSounds:
-	bsr.w	StopZ80				; Stop the Z80
+	bsr.w	StopZ80_old				; Stop the Z80
 	move.b	subSndQueue1,FMDrvQueue1+1	; Update queue 1
 	move.b	subSndQueue2,FMDrvQueue2+1	; Update queue 2
 	move.b	subSndQueue3,FMDrvQueue3+1	; Update queue 3
-	bsr.w	StartZ80			; Start the Z80
+	bsr.w	StartZ80_old			; Start the Z80
 	rts
 
 ; -------------------------------------------------------------------------
@@ -3481,14 +3481,14 @@ InitMD:
 	move.b	d0,IOCTRL3
 	move.b	#$C0,IODATA1
 
-	bsr.w	StopZ80				; Stop the Z80
+	bsr.w	StopZ80_old				; Stop the Z80
 	
 	DMAFILL	0,$10000,0			; Clear VRAM
 
 	VDPCMD	move.l,0,VSRAM,WRITE,VDPCTRL	; Clear VSRAM
 	move.l	#0,VDPDATA
 
-	bsr.w	StartZ80			; Start the Z80
+	bsr.w	StartZ80_old			; Start the Z80
 	move.w	#$8134,ipxVDPReg1		; Reset IPX VDP register 1 cache
 	rts
 
@@ -3542,7 +3542,7 @@ ResultsVDPRegs:
 ; Stop the Z80
 ; -------------------------------------------------------------------------
 
-StopZ80:
+StopZ80_old:
 	move	sr,savedSR.w			; Save status register
 	Z80STOP					; Stop the Z80
 	rts
@@ -3551,7 +3551,7 @@ StopZ80:
 ; Start the Z80
 ; -------------------------------------------------------------------------
 
-StartZ80:
+StartZ80_old:
 	Z80START				; Start the Z80
 	move	savedSR.w,sr			; Restore status register
 	rts

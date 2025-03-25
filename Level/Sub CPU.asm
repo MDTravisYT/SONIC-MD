@@ -9,8 +9,8 @@
 ; Fade out music
 ; -------------------------------------------------------------------------
 
-FadeOutMusic:
-	move.w	#SCMD_FADECDA,d0		; Fade out CD music
+;FadeOutMusic:
+;	move.w	#SCMD_FADECDA,d0		; Fade out CD music
 
 ; -------------------------------------------------------------------------
 ; Send a command to the Sub CPU

@@ -171,9 +171,9 @@ Start:
 	move.w	#240,timer.w			; Set timer
 	move.b	#1,enableDisplay		; Set to enable display
 	
-	bsr.w	StopZ80				; Play sound
+	bsr.w	StopZ80_old				; Play sound
 	move.b	#FM_D8,FMDrvQueue2
-	bsr.w	StartZ80
+	bsr.w	StartZ80_old
 	
 	bsr.w	PrepFadeFromWhite		; Prepare fade from white
 	bsr.w	VSync				; VSync
@@ -254,7 +254,7 @@ VInterrupt:
 	bclr	#0,ipxVSync			; Clear VSync flag
 	beq.w	.NoUpdates			; If it wasn't set, branch
 	
-	bsr.w	StopZ80				; Stop the Z80
+	bsr.w	StopZ80_old				; Stop the Z80
 	move.w	VDPCTRL,d0			; Reset V-BLANK flag
 	
 	bclr	#0,enableDisplay		; Clear display enable flag
@@ -275,7 +275,7 @@ VInterrupt:
 	DMA68K	sprites,$F000,$280,VRAM		; Copy sprite data
 
 	jsr	ReadController(pc)		; Read controller
-	bsr.w	StartZ80			; Start the Z80
+	bsr.w	StartZ80_old			; Start the Z80
 
 .NoUpdates:
 	tst.w	timer.w				; Is the timer running?
@@ -1477,7 +1477,7 @@ InitMD:
 	move.b	d0,IOCTRL3
 	move.b	#$C0,IODATA1
 	
-	bsr.w	StopZ80				; Stop the Z80
+	bsr.w	StopZ80_old				; Stop the Z80
 	
 	VDPCMD	move.l,0,VRAM,WRITE,VDPCTRL	; Clear VRAM
 	lea	VDPDATA,a0
@@ -1494,7 +1494,7 @@ InitMD:
 	VDPCMD	move.l,0,VSRAM,WRITE,VDPCTRL	; Clear VSRAM
 	move.l	#0,VDPDATA
 	
-	bsr.w	StartZ80			; Start the Z80
+	bsr.w	StartZ80_old			; Start the Z80
 	move.w	#$8134,ipxVDPReg1		; Reset IPX VDP register 1 cache
 	rts
 
@@ -1502,7 +1502,7 @@ InitMD:
 ; Stop the Z80
 ; -------------------------------------------------------------------------
 
-StopZ80:
+StopZ80_old:
 	move	sr,savedSR.w			; Save status register
 	move	#$2700,sr			; Disable interrupts
 	Z80STOP					; Stop the Z80
@@ -1512,7 +1512,7 @@ StopZ80:
 ; Start the Z80
 ; -------------------------------------------------------------------------
 
-StartZ80:
+StartZ80_old:
 	Z80START				; Start the Z80
 	move	savedSR.w,sr			; Restore status register
 	rts

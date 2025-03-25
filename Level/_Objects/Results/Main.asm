@@ -211,9 +211,9 @@ ObjResults_Bonus:
 	bne.s	.HaveBonus			; If so, branch
 
 	if (REGION=USA)|((REGION<>USA)&(DEMO=0))
-		jsr	StopZ80			; Play "ka-ching" sound
+		jsr	StopZ80_old			; Play "ka-ching" sound
 		move.b	#FM_KACHING,FMDrvQueue1
-		jsr	StartZ80
+		jsr	StartZ80_old
 
 		cmpi.w	#45,oResultsTimer(a0)
 		bcc.s	.AddPoints

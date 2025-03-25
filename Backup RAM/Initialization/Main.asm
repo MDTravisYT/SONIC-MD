@@ -315,7 +315,7 @@ InitMD:
 	move.b	d0,IOCTRL3
 	move.b	#$C0,IODATA1
 
-	bsr.w	StopZ80				; Stop the Z80
+	bsr.w	StopZ80_old				; Stop the Z80
 	DMAFILL	0,$10000,0			; Clear VRAM
 
 	VDPCMD	move.l,$C000,VRAM,WRITE,VDPCTRL	; Clear Plane A
@@ -348,7 +348,7 @@ InitMD:
 	move.w	#0,VDPDATA
 	dbf	d0,.ClearVSRAM
 
-	bsr.w	StartZ80			; Start the Z80
+	bsr.w	StartZ80_old			; Start the Z80
 	move.w	#$8134,ipxVDPReg1		; Reset IPX VDP register 1 cache
 	rts
 
@@ -386,7 +386,7 @@ InitMD:
 ; Stop the Z80
 ; -------------------------------------------------------------------------
 
-StopZ80:
+StopZ80_old:
 	move	sr,savedSR.w			; Save status register
 	Z80STOP					; Stop the Z80
 	rts
@@ -395,7 +395,7 @@ StopZ80:
 ; Start the Z80
 ; -------------------------------------------------------------------------
 
-StartZ80:
+StartZ80_old:
 	Z80START				; Start the Z80
 	move	savedSR.w,sr			; Restore status register
 	rts
@@ -436,7 +436,7 @@ ReadController:
 
 LoadDummyZ80:
 	Z80RESOFF				; Set Z80 reset off
-	jsr	StopZ80(pc)			; Stop the Z80
+	jsr	StopZ80_old(pc)			; Stop the Z80
 
 	lea	Z80RAM,a1			; Load dummy Z80 code
 	move.b	#$F3,(a1)+			; DI
@@ -447,7 +447,7 @@ LoadDummyZ80:
 
 	Z80RESON				; Set Z80 reset on
 	Z80RESOFF				; Set Z80 reset off
-	jmp	StartZ80(pc)			; Start the Z80
+	jmp	StartZ80_old(pc)			; Start the Z80
 	rts
 
 ; -------------------------------------------------------------------------
@@ -477,7 +477,7 @@ PlaySound2:
 ; -------------------------------------------------------------------------
 
 FlushSoundQueue:
-	jsr	StopZ80				; Stop the Z80
+	jsr	StopZ80_old				; Stop the Z80
 
 .CheckQueue2:
 	tst.b	fmSndQueue1.w			; Is the 1st sound queue set?
@@ -493,7 +493,7 @@ FlushSoundQueue:
 	move.b	#0,fmSndQueue2.w		; Clear 2nd sound queue
 
 .End:
-	jmp	StartZ80			; Start the Z80
+	jmp	StartZ80_old			; Start the Z80
 
 ; -------------------------------------------------------------------------
 ; Mass fill

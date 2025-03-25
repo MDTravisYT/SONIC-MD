@@ -349,7 +349,7 @@ Level_MainLoop:
 	btst	#0,paused.w			; Is the game paused?
 	beq.w	.NotPaused			; If not, branch
 
-	bsr.w	PauseMusic			; Pause music
+	jsr		PauseMusic			; Pause music
 	
 	if DEMO<>0
 		tst.w	demoMode		; Are we in a demo?
@@ -618,7 +618,7 @@ LoadLifeIcon:
 ; Pause the music
 ; -------------------------------------------------------------------------
 
-PauseMusic:
+PauseMusic_old:
 	move.w	#FM_CHARGESTOP,d0		; Play charge stop sound
 	jsr	PlayFMSound
 
@@ -703,7 +703,7 @@ VInterrupt:
 	jsr	VInt_Index(pc,d0.w)
 
 VInt_Finish:
-	jsr	UpdateFMQueues			; Update FM driver queues
+	jsr		UpdateMusic			; Update FM driver queues
 	tst.b	paused.w			; Is the game paused?
 	bne.s	VInt_Done			; If so, branch
 	bsr.w	RunBoredTimer			; Run boredom timer
@@ -750,7 +750,7 @@ VInt_Lag:
 
 .NotPAL:
 	move.w	#1,hintFlag.w			; Set H-INT flag
-	jsr	StopZ80				; Stop the Z80
+	jsr	StopZ80_old				; Stop the Z80
 
 	tst.b	waterFullscreen.w		; Is water filling the screen?
 	bne.s	.WaterPal			; If so, branch
@@ -762,7 +762,7 @@ VInt_Lag:
 
 .Done:
 	move.w	vdpReg0A.w,(a5)			; Update H-INT counter
-	jsr	StartZ80			; Start the Z80
+	jsr	StartZ80_old			; Start the Z80
 
 	bra.w	VInt_Finish			; Finish V-INT
 
@@ -820,7 +820,7 @@ VInt_Pause:
 ; -------------------------------------------------------------------------
 
 VInt_Level:
-	jsr	StopZ80				; Stop the Z80
+	jsr	StopZ80_old				; Stop the Z80
 	bsr.w	ReadControllers			; Read controllers
 
 	LVLDMA	palette,$0000,$80,CRAM		; DMA palette
@@ -836,7 +836,7 @@ VInt_Level:
 
 .NoArtLoad:
 	jsr	UpdateAnimTiles			; Update animated tiles
-	jsr	StartZ80			; Start the Z80
+	jsr	StartZ80_old			; Start the Z80
 
 	movem.l	cameraX.w,d0-d7			; Draw level
 	movem.l	d0-d7,camXCopy
@@ -859,14 +859,14 @@ VInt_S1SpecStg:
 ; -------------------------------------------------------------------------
 
 VInt_LevelLoad:
-	jsr	StopZ80				; Stop the Z80
+	jsr	StopZ80_old				; Stop the Z80
 	bsr.w	ReadControllers			; Read controllers
 
 	LVLDMA	palette,$0000,$80,CRAM		; DMA palette
 	LVLDMA	hscroll,$FC00,$380,VRAM		; DMA horizontal scroll data
 	LVLDMA	sprites,$F800,$280,VRAM		; DMA sprites
 
-	jsr	StartZ80			; Start the Z80
+	jsr	StartZ80_old			; Start the Z80
 
 	movem.l	cameraX.w,d0-d7			; Draw level
 	movem.l	d0-d7,camXCopy
@@ -912,14 +912,14 @@ VInt_PalFade:
 ; -------------------------------------------------------------------------
 
 VInt_S1ContScr:
-	jsr	StopZ80				; Stop the Z80
+	jsr	StopZ80_old				; Stop the Z80
 	bsr.w	ReadControllers			; Read controllers
 
 	LVLDMA	palette,$0000,$80,CRAM		; DMA palette
 	LVLDMA	sprites,$F800,$280,VRAM		; DMA sprites
 	LVLDMA	hscroll,$FC00,$380,VRAM		; DMA horizontal scroll data
 
-	jsr	StartZ80			; Start the Z80
+	jsr	StartZ80_old			; Start the Z80
 
 	lea	objPlayerSlot.w,a0		; Load player sprite art
 	bsr.w	LoadSonicDynPLC
@@ -941,7 +941,7 @@ VInt_S1ContScr:
 ; -------------------------------------------------------------------------
 
 DoVIntUpdates:
-	jsr	StopZ80				; Stop the Z80
+	jsr	StopZ80_old				; Stop the Z80
 	bsr.w	ReadControllers			; Read controllers
 
 	tst.b	waterFullscreen.w		; Is water filling the screen?
@@ -956,7 +956,7 @@ DoVIntUpdates:
 	LVLDMA	sprites,$F800,$280,VRAM		; DMA sprites
 	LVLDMA	hscroll,$FC00,$380,VRAM		; DMA horizontal scroll data
 
-	jmp	StartZ80			; Start the Z80
+	jmp	StartZ80_old			; Start the Z80
 
 ; -------------------------------------------------------------------------
 ; Horizontal interrupt

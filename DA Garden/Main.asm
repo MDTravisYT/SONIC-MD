@@ -1541,7 +1541,7 @@ InitMD:
 	bra.s	.SkipZ80			; Skip the Z80 stuff
 	
 	Z80RESOFF				; Set Z80 reset off
-	bsr.w	StopZ80				; Stop the Z80
+	bsr.w	StopZ80_old				; Stop the Z80
 	
 	lea	Z80RAM,a1			; Load Z80 code
 	move.b	#$F3,(a1)+			; DI
@@ -1554,7 +1554,7 @@ InitMD:
 	Z80RESOFF				; Set Z80 reset off
 
 .SkipZ80:
-	bsr.w	StopZ80				; Stop the Z80
+	bsr.w	StopZ80_old				; Stop the Z80
 
 	DMAFILL	0,$10000,0			; Clear VRAM
 
@@ -1584,7 +1584,7 @@ InitMD:
 	VDPCMD	move.l,0,VSRAM,WRITE,VDPCTRL	; Reset VSRAM
 	move.l	#$FFE0,VDPDATA
 
-	bsr.w	StartZ80			; Start the Z80
+	bsr.w	StartZ80_old			; Start the Z80
 	move.w	#$8134,ipxVDPReg1		; Reset IPX VDP register 1 cache
 	rts
 
@@ -1621,7 +1621,7 @@ InitMD:
 ; Stop the Z80
 ; -------------------------------------------------------------------------
 
-StopZ80:
+StopZ80_old:
 	move	sr,savedSR.w			; Save status register
 	Z80STOP					; Stop the Z80
 	rts
@@ -1630,7 +1630,7 @@ StopZ80:
 ; Start the Z80
 ; -------------------------------------------------------------------------
 
-StartZ80:
+StartZ80_old:
 	Z80START				; Start the Z80
 	move	savedSR.w,sr			; Restore status register
 	rts
@@ -1681,7 +1681,7 @@ VInterrupt:
 	lea	VDPDATA,a2			; VDP data port
 	move.w	(a1),d0				; Reset V-BLANK flag
 
-	jsr	StopZ80(pc)			; Stop the Z80
+	jsr	StopZ80_old(pc)			; Stop the Z80
 	
 	move.w	vintRoutine.w,d0		; Run routine
 	add.w	d0,d0
@@ -1808,7 +1808,7 @@ VInt_Done:
 	subq.w	#1,volcanoTimer.w		; Decrement volcano timer
 
 .CheckTimer:
-	bsr.w	StartZ80			; Start the Z80
+	bsr.w	StartZ80_old			; Start the Z80
 	
 	tst.w	timer.w				; Is the timer running?
 	beq.s	.NoTimer			; If not, branch
