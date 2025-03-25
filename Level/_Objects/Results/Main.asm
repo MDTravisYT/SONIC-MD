@@ -282,7 +282,8 @@ ObjResults_NextLevel:
 	move.w	d0,zoneAct			; Set level ID
 
 	jsr	ResetSavedObjFlags		; Reset saved object flags
-	jsr	FadeOutMusic			; Fade music out
+	move.b	#$E0, d0	;	fade out music
+	jsr		PlayFMSound
 
 	jsr	DrawObject			; Draw sprite
 	move.b	act,d0				; Were we in act 3?
