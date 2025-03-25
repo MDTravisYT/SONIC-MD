@@ -6,7 +6,7 @@
 ; -------------------------------------------------------------------------
 
 ; SFX
-	rsset	$90
+	rsset	$A0
 FM_START	rs.w	0			; Starting ID
 FM_SKID		rs.b	1			; Skid
 FM_91		rs.b	1
