@@ -160,8 +160,9 @@ GMdef	macro	addr,	id
 		GMDef	LOGO_Jmp,	GM_LOGO
 		GMDef	Title_Jmp,	GM_TITLE
 		GMDef	LevelStart,	GM_LEVEL
-		GMDef	LevelStart,	GM_WARP
+		GMDef	Warp_Jmp,	GM_WARP
 ; -------------------------------------------------------------------------
 LOGO_Jmp:	jmp		LOGO				; SEGA
 Title_Jmp:	jmp		TITLE				; Title
+Warp_Jmp:	jmp		WARP				; Time Warp Cutscene
 ; -------------------------------------------------------------------------
