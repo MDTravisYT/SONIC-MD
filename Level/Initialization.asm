@@ -127,7 +127,7 @@ Start:
 	jsr		LoadSoundDriver				; Initialize sound driver
 	bsr.w	InitControllers			; Initialize joypads
 
-	move.b	#0,(timeZone).l			; (ADDED) Set time zone to present
+	move.b	#1,(timeZone).l			; (ADDED) Set time zone to present
 	move.b	#0,gameMode.w			; Set game mode to "level"
 
 	move.b	gameMode.w,d0			; Go to the current game mode routine

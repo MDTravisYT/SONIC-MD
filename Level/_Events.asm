@@ -84,37 +84,37 @@ LevEvents_PPZ_Index:
 
 ; -------------------------------------------------------------------------
 
-LevEvents_PPZ1:	;	temporarily commented
-;	cmpi.b	#1,timeZone			; Are we in the present?
-;	bne.s	LevEvents_PPZ2			; If not, branch
-;
-;	cmpi.w	#$1C16,objPlayerSlot+oX.w	; Is the player within the second 3D ramp?
-;	bcs.s	.Not3DRamp			; If not, branch
-;	cmpi.w	#$21C6,objPlayerSlot+oX.w
-;	bcc.s	.Not3DRamp			; If not, branch
-;	move.w	#$88,camYCenter.w		; If so, change the camera Y center
-;
-;.Not3DRamp:
-;	move.w	#$710,destBottomBound.w		; Set bottom boundary before the first 3D ramp
-;
-;	cmpi.w	#$840,cameraX.w			; Is the camera's X position < $840?
-;	bcs.s	.End				; If so, branch
-;
-;	tst.b	updateHUDTime			; Is the level timer running?
-;	beq.s	.AlreadySet			; If not, branch
-;
-;	cmpi.w	#$820,leftBound.w		; Has the left boundary been set
-;	bcc.s	.AlreadySet			; If not, branch
-;	move.w	#$820,leftBound.w		; Set the left boundary so that the player can't go back to the first 3D ramp
-;	move.w	#$820,destLeftBound.w
-;
-;.AlreadySet:
-;	move.w	#$410,destBottomBound.w		; Set bottom boundary after the first 3D ramp
-;	cmpi.w	#$E00,cameraX.w			; Is the camera's X position < $E00?
-;	bcs.s	.End				; If so, branch
-;	move.w	#$310,destBottomBound.w		; Update the bottom boundary
-;
-;.End:
+LevEvents_PPZ1:
+	cmpi.b	#1,timeZone			; Are we in the present?
+	bne.s	LevEvents_PPZ2			; If not, branch
+
+	cmpi.w	#$1C16,objPlayerSlot+oX.w	; Is the player within the second 3D ramp?
+	bcs.s	.Not3DRamp			; If not, branch
+	cmpi.w	#$21C6,objPlayerSlot+oX.w
+	bcc.s	.Not3DRamp			; If not, branch
+	move.w	#$88,camYCenter.w		; If so, change the camera Y center
+
+.Not3DRamp:
+	move.w	#$710,destBottomBound.w		; Set bottom boundary before the first 3D ramp
+
+	cmpi.w	#$840,cameraX.w			; Is the camera's X position < $840?
+	bcs.s	.End				; If so, branch
+
+	tst.b	updateHUDTime			; Is the level timer running?
+	beq.s	.AlreadySet			; If not, branch
+
+	cmpi.w	#$820,leftBound.w		; Has the left boundary been set
+	bcc.s	.AlreadySet			; If not, branch
+	move.w	#$820,leftBound.w		; Set the left boundary so that the player can't go back to the first 3D ramp
+	move.w	#$820,destLeftBound.w
+
+.AlreadySet:
+	move.w	#$410,destBottomBound.w		; Set bottom boundary after the first 3D ramp
+	cmpi.w	#$E00,cameraX.w			; Is the camera's X position < $E00?
+	bcs.s	.End				; If so, branch
+	move.w	#$310,destBottomBound.w		; Update the bottom boundary
+
+.End:
 	rts
 
 ; -------------------------------------------------------------------------
