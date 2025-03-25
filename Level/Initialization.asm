@@ -150,14 +150,17 @@ MainGameLoop:
 ; -------------------------------------------------------------------------
 ; Game modes
 ; -------------------------------------------------------------------------
+GMdef	macro	addr,	id
+	bra.w	addr
+	\id:	rs.l	1
+	endm
+
 	@index:
-		bra.w	LOGO_Jmp
-		bra.w	Title_Jmp
-		bra.w	LevelStart			; Level
-;	Define Game mode constants
-GM_LOGO		=	0
-GM_TITLE	=	GM_LOGO+4
-GM_LEVEL	=	GM_TITLE+4
+		rsset	0
+		GMDef	LOGO_Jmp,	GM_LOGO
+		GMDef	Title_Jmp,	GM_TITLE
+		GMDef	LevelStart,	GM_LEVEL
+		GMDef	LevelStart,	GM_WARP
 ; -------------------------------------------------------------------------
 LOGO_Jmp:	jmp		LOGO				; SEGA
 Title_Jmp:	jmp		TITLE				; Title
