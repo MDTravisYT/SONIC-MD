@@ -694,8 +694,8 @@ StartResults:
 	jsr	SubCPUCmd
 
 .NotPast:
-	move.w	#SCMD_RESULTMUS,d0		; Play results music
-	jsr	SubCPUCmd
+	move.b	#bgm_GotThrough, d0	;	TEMP
+	jsr		PlayFMSound
 
 	bset	#0,ctrlLocked.w			; Force the player to move right
 	move.w	#$808,playerCtrlHold.w

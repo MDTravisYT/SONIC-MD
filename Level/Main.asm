@@ -554,43 +554,45 @@ UpdateGlobalAnims:
 ; -------------------------------------------------------------------------
 
 PlayLevelMusic:
-	moveq	#0,d0				; Get time zone
-	moveq	#0,d1
-	move.b	timeZone,d0
-	bclr	#7,d0
-	tst.b	timeAttackMode			; Are we in time attack mode?
-	bne.s	.Notfuture			; If so, branch
-	cmpi.b	#2,d0				; Are we in the future?
-	bne.s	.NotFuture			; If not, branch
-	add.b	goodFuture,d0			; Apply good future flag
-
-.NotFuture:
-	move.b	zone,d1				; Send music play Sub CPU command
-	add.w	d1,d1
-	add.w	d1,d1
-	add.w	d0,d1
-	moveq	#0,d0
-	move.b	MusicPlayCmds(pc,d1.w),d0
-	jmp	SubCPUCmd
-
-; -------------------------------------------------------------------------
-
-MusicPlayCmds:
-	dc.b	SCMD_PASTMUS, SCMD_R1AMUS, SCMD_R1DMUS, SCMD_R1CMUS
-	dc.b	SCMD_PASTMUS, SCMD_R3AMUS, SCMD_R3DMUS, SCMD_R3CMUS
-	dc.b	SCMD_PASTMUS, SCMD_R4AMUS, SCMD_R4DMUS, SCMD_R4CMUS
-	dc.b	SCMD_PASTMUS, SCMD_R5AMUS, SCMD_R5DMUS, SCMD_R5CMUS
-	dc.b	SCMD_PASTMUS, SCMD_R6AMUS, SCMD_R6DMUS, SCMD_R6CMUS
-	dc.b	SCMD_PASTMUS, SCMD_R7AMUS, SCMD_R7DMUS, SCMD_R7CMUS
-	dc.b	SCMD_PASTMUS, SCMD_R8AMUS, SCMD_R8DMUS, SCMD_R8CMUS
+	move.b	#$81, d0	;	TEMP
+	jmp		PlayFMSound
+;	moveq	#0,d0				; Get time zone
+;	moveq	#0,d1
+;	move.b	timeZone,d0
+;	bclr	#7,d0
+;	tst.b	timeAttackMode			; Are we in time attack mode?
+;	bne.s	.Notfuture			; If so, branch
+;	cmpi.b	#2,d0				; Are we in the future?
+;	bne.s	.NotFuture			; If not, branch
+;	add.b	goodFuture,d0			; Apply good future flag
+;
+;.NotFuture:
+;	move.b	zone,d1				; Send music play Sub CPU command
+;	add.w	d1,d1
+;	add.w	d1,d1
+;	add.w	d0,d1
+;	moveq	#0,d0
+;	move.b	MusicPlayCmds(pc,d1.w),d0
+;	jmp	SubCPUCmd
+;
+;; -------------------------------------------------------------------------
+;
+;MusicPlayCmds:
+;	dc.b	SCMD_PASTMUS, SCMD_R1AMUS, SCMD_R1DMUS, SCMD_R1CMUS
+;	dc.b	SCMD_PASTMUS, SCMD_R3AMUS, SCMD_R3DMUS, SCMD_R3CMUS
+;	dc.b	SCMD_PASTMUS, SCMD_R4AMUS, SCMD_R4DMUS, SCMD_R4CMUS
+;	dc.b	SCMD_PASTMUS, SCMD_R5AMUS, SCMD_R5DMUS, SCMD_R5CMUS
+;	dc.b	SCMD_PASTMUS, SCMD_R6AMUS, SCMD_R6DMUS, SCMD_R6CMUS
+;	dc.b	SCMD_PASTMUS, SCMD_R7AMUS, SCMD_R7DMUS, SCMD_R7CMUS
+;	dc.b	SCMD_PASTMUS, SCMD_R8AMUS, SCMD_R8DMUS, SCMD_R8CMUS
 
 ; -------------------------------------------------------------------------
 ; Play Palmtree Panic present music
 ; -------------------------------------------------------------------------
 
 PlayLevelMusic2:
-	move.w	#SCMD_R1AMUS,d0			; Play PPZ present music
-	jsr	SubCPUCmd
+	move.b	#$81, d0	;	TEMP
+	jsr		PlayFMSound
 	; Continue to load the life icon
 
 ; -------------------------------------------------------------------------
