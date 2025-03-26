@@ -69,8 +69,8 @@ ObjGameOver_Init:
 	
 	tst.b	lives				; Are we out of lives?
 	bne.s	ObjGameOver_Main		; If not, branch
-	move.w	#SCMD_GMOVERMUS,d0		; Play game over music
-	jmp	SubCPUCmd
+	move.w	#bgm_GameOver,d0		; Play game over music
+	jmp		PlayFMSound
 
 ; -------------------------------------------------------------------------
 

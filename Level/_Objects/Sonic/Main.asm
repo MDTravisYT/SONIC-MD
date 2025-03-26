@@ -2477,7 +2477,7 @@ ObjSonic_Restart:
 	move.w	#SCMD_FADECDA,d0		; Set to fade out music
 
 	tst.b	lives				; Are we out of lives?
-	beq.s	.SendCmd			; If so, branch
+	beq.s	.GameOver			; If so, branch
 	cmpi.b	#1,timeZone			; Are we in the present?
 	bne.s	.SpawnAtStart			; If not, branch
 	tst.b	checkpoint			; Have we hit a checkpoint?
@@ -2491,6 +2491,9 @@ ObjSonic_Restart:
 
 .SendCmd:
 	bra.w	SubCPUCmd			; Set the fade out command
+	
+.GameOver:
+	move.b	#GM_TITLE,	gamemode.w
 
 .End:
 	rts
