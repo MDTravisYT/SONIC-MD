@@ -80,10 +80,10 @@ ProcessSel:
 		move.b	#GM_LEVEL,	gamemode.w
 		rts
 	.opt2:
-	.opt4:
-		rts
 	.opt3:
 		bra.w	SNDTEST
+	.opt4:
+		bra.w	StageSelect
 		
 DisplayCurs:
 		move.l	#$40000003+(4*$20000)+(16*$800000),	d0 ; initial offset of cursor (x4 y16)
@@ -127,3 +127,4 @@ TITLETXT3_2: incbin	time.temp
 	DefTXT TITLESEL4,	"STAGE SELECT"
 	
 	include		"Title Screen/SoundTest.asm"
+	include		"Title Screen/Stage Select.asm"
