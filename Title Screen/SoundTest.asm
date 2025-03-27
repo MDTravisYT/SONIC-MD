@@ -53,5 +53,4 @@ SNDTEST:
 		move.w	d0,	VDPDATA
 		rts
 		
-STTXT:	dc.b	'SOUND TEST'
-	STTXT_END:	even
+	DefTXT	STTXT,'SOUND TEST'

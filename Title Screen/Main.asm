@@ -1,5 +1,8 @@
 SelNum	=	$FFFF0000
 
+ASCII:	incbin		"Title Screen/ASCII.ART"
+ASCII_END:	even
+
 TITLE:
 		jsr		ClearScreen
 		LoadASCII
@@ -97,50 +100,30 @@ DisplayCurs:
 		rts
 	
 	
-TITLETXT1: dc.b  '###   ###  ##  # ##  ###'
-	TITLETXT1_END:	even
-TITLETXT2: dc.b '## ## ## ## ### # ## ## ##'
-	TITLETXT2_END:	even
-TITLETXT3: dc.b '##    ## ## ##### ## ##'
-	TITLETXT3_END:	even
-TITLETXT4: dc.b  '###  ## ## ## ## ## ##'
-	TITLETXT4_END:	even
-TITLETXT5: dc.b    '## ## ## ##  # ## ##'
-	TITLETXT5_END:	even
-TITLETXT6: dc.b '## ## ## ## ##  # ## ## ##'
-	TITLETXT6_END:	even
-TITLETXT7: dc.b  '###   ###  ##  # ##  ###'
-	TITLETXT7_END:	even
+	DefTXT TITLETXT1, "###   ###  ##  # ##  ###"
+	DefTXT TITLETXT2,'## ## ## ## ### # ## ## ##'
+	DefTXT TITLETXT3,'##    ## ## ##### ## ##'
+	DefTXT TITLETXT4, '###  ## ## ## ## ## ##'
+	DefTXT TITLETXT5,   '## ## ## ##  # ## ##'
+	DefTXT TITLETXT6,'## ## ## ## ##  # ## ## ##'
+	DefTXT TITLETXT7, '###   ###  ##  # ##  ###'
 	
-TITLETXT2_1: dc.b '##   # ####'
-	TITLETXT2_1_END:	even
-TITLETXT2_2: dc.b '### ## ## ##'
-	TITLETXT2_2_END:	even
-TITLETXT2_3: dc.b '###### ## ##'
-	TITLETXT2_3_END:	even
-TITLETXT2_4: dc.b '## # # ## ##'
-	TITLETXT2_4_END:	even
-TITLETXT2_5: dc.b '##   # ## ##'
-	TITLETXT2_5_END:	even
-TITLETXT2_6: dc.b '##   # ## ##'
-	TITLETXT2_6_END:	even
-TITLETXT2_7: dc.b '##   # ####'
-	TITLETXT2_7_END:	even
+	DefTXT TITLETXT2_1,'##   # ####'
+	DefTXT TITLETXT2_2,'### ## ## ##'
+	DefTXT TITLETXT2_3,'###### ## ##'
+	DefTXT TITLETXT2_4,'## # # ## ##'
+	DefTXT TITLETXT2_5,'##   # ## ##'
+	DefTXT TITLETXT2_6,'##   # ## ##'
+	DefTXT TITLETXT2_7,'##   # ####'
 	
-TITLETXT3_1: dc.b 'ROM DATE'
-	TITLETXT3_1_END:	even
+	DefTXT TITLETXT3_1,'ROM DATE'
 TITLETXT3_2: incbin	time.temp
-	TITLETXT3_2_END:	even
-TITLETXT3_3: dc.b 'MDTRAVIS 2025'
-	TITLETXT3_3_END:	even
+	TITLETXT3_2_END:
+	DefTXT TITLETXT3_3, 'MDTRAVIS 2025'
 	
-TITLESEL1:	dc.b	"START GAME"
-	TITLESEL1_END:	even
-TITLESEL2:	dc.b	"OPTIONS"
-	TITLESEL2_END:	even
-TITLESEL3:	dc.b	"SOUND TEST"
-	TITLESEL3_END:	even
-TITLESEL4:	dc.b	"STAGE SELECT"
-	TITLESEL4_END:	even
+	DefTXT TITLESEL1,	"START GAME"
+	DefTXT TITLESEL2,	"OPTIONS"
+	DefTXT TITLESEL3,	"SOUND TEST"
+	DefTXT TITLESEL4,	"STAGE SELECT"
 	
 	include		"Title Screen/SoundTest.asm"
