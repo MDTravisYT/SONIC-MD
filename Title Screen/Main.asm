@@ -77,9 +77,10 @@ ProcessSel:
 		move.b	#GM_LEVEL,	gamemode.w
 		rts
 	.opt2:
-	.opt3:
 	.opt4:
 		rts
+	.opt3:
+		bra.w	SNDTEST
 		
 DisplayCurs:
 		move.l	#$40000003+(4*$20000)+(16*$800000),	d0 ; initial offset of cursor (x4 y16)
@@ -141,3 +142,5 @@ TITLESEL3:	dc.b	"SOUND TEST"
 	TITLESEL3_END:	even
 TITLESEL4:	dc.b	"STAGE SELECT"
 	TITLESEL4_END:	even
+	
+	include		"Title Screen/SoundTest.asm"
