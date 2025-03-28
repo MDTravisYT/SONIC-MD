@@ -3,7 +3,7 @@
 LOGO:
 		jsr		ClearScreen
 		LoadASCII
-		InitTXT	LOGOTXT,LOGOTXT_END,18,12
+		InitTXT	LOGOTXT,18,12
 		move.w	#60,	vintTimer.w
 	.loop:
 		move.b	#4,vintRoutine.w
