@@ -1,7 +1,7 @@
 WARP:
 		jsr		ClearScreen
 		LoadASCII
-		InitTXT	WARPTXT,WARPTXT_END,18,12
+		InitTXT	WARPTXT,18,12
 		move.w	#60,	vintTimer.w
 		move.w	#$8700+%00000000,(VDPCTRL)      ;	BACKGROUND COLOR
 		move.w	#0,	palette+4
