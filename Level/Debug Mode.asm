@@ -1,4 +1,8 @@
 ; -------------------------------------------------------------------------
+
+debugSpeed	=	$38
+
+; -------------------------------------------------------------------------
 ; Sonic CD Disassembly
 ; By Ralakimus 2021
 ; -------------------------------------------------------------------------
@@ -9,19 +13,19 @@ UpdateDebugMode:
 	move.b	p1CtrlHold.w,d0
 	andi.b	#$F,d0
 	bne.s	.Accel
-	move.l	#$4000,debugSpeed
+	move.l	#$4000,debugSpeed(a0)
 	bra.s	.GotSpeed
 
 ; -------------------------------------------------------------------------
 
 .Accel:
-	addi.l	#$2000,debugSpeed
-	cmpi.l	#$80000,debugSpeed
+	addi.l	#$2000,debugSpeed(a0)
+	cmpi.l	#$80000,debugSpeed(a0)
 	bls.s	.GotSpeed
-	move.l	#$80000,debugSpeed
+	move.l	#$80000,debugSpeed(a0)
 
 .GotSpeed:
-	move.l	debugSpeed,d0
+	move.l	debugSpeed(a0),d0
 	btst	#0,p1CtrlHold.w
 	beq.s	.ChkDown
 	sub.l	d0,oY(a0)
@@ -118,10 +122,3 @@ UpdateDebugMode:
 
 .NoRevert:
 	jmp	DrawObject
-
-; -------------------------------------------------------------------------
-
-debugSpeed:
-	dc.l	$4000
-
-; -------------------------------------------------------------------------
