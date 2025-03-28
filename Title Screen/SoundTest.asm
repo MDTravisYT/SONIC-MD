@@ -4,7 +4,7 @@ HEXART:		incbin	"Title Screen/HEX.ART"
 SNDTEST:
 		jsr		ClearScreen
 		LVLDMA	HEXART,$4000,HEXEND-HEXART,VRAM
-		InitTXT	STTXT,STTXT_END,15,12
+		InitTXT	STTXT,15,12
 		move.b	#$80,	SelNum
 		bsr.s	.print
 	.loop:

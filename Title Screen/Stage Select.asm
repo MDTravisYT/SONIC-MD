@@ -2,13 +2,13 @@ StageSelect:
 		jsr		ClearScreen
 		clr.b	SelNum
 		LVLDMA	HEXART,$4000,HEXEND-HEXART,VRAM
-		InitTXT	SS_STR1,SS_STR1_END,15,10
-		InitTXT	SS_STR2,SS_STR2_END,15,12
-		InitTXT	SS_STR3,SS_STR3_END,15,14
-		InitTXT	SS_STR4,SS_STR4_END,15,16
-		InitTXT	SS_STR5,SS_STR5_END,1,26
+		InitTXT	SS_STR1,15,10
+		InitTXT	SS_STR2,15,12
+		InitTXT	SS_STR3,15,14
+		InitTXT	SS_STR4,15,16
+		InitTXT	SS_STR5,1,26
 		bsr.w	.display
-		bsr.w	.DrawCursor
+		CursorInit	$3E,13,10
 	.loop:
 		move.b	#4,vintRoutine.w
 		bsr.w	VSync
@@ -24,9 +24,8 @@ StageSelect:
 		bne.w	.exit
 		btst	#bSt,(p1CtrlTap).w	;	start
 		bne.w	.start
-		move.w	#$3E,	d2
 		bsr.w	.display
-		bsr.w	.DrawCursor
+		CursorInit	$3E,13,10
 		bra.s	.loop
 	.exit:
 		rts
@@ -34,16 +33,14 @@ StageSelect:
 		move.b	#GM_LEVEL,	gamemode.w
 		rts
 	.up:
-		move.w	#0,	d2
-		bsr.w	.DrawCursor
+		CursorInit	0,13,10
 		sub.b	#1,	SelNum
 		cmpi.b	#$FF,	SelNum
 		bne.w	.loop
 		move.b	#3,	SelNum
 		bra.w	.loop
 	.down:
-		move.w	#0,	d2
-		bsr.w	.DrawCursor
+		CursorInit	0,13,10
 		add.b	#1,	SelNum
 		cmpi.b	#4,	SelNum
 		bne.w	.loop
@@ -144,20 +141,6 @@ StageSelect:
 		move.l	#$40000003+(21*$20000)+(14*$800000),(VDPCTRL)
 		moveq	#0,	d1
 		jmp		loadASCII2
-		
-	.DrawCursor:
-		move.l	#$40000003+(13*$20000)+(10*$800000),	d0 ; initial offset of cursor (x13 y10)
-		move.b	SelNum,	d1
-	.loopsel:
-		tst.b	d1
-		beq.s	.cont
-		add.l	#$1000000,	d0
-		sub.b	#1,	d1
-		bra.s	.loopsel
-	.cont:
-		move.l	d0,	VDPCTRL
-		move.w	d2,	VDPDATA	;	tile to draw
-		rts
 
 	DefTXT	SS_STR1,	"ROUND"	;	zone
 	DefTXT	SS_STR2,	"ZONE"	;	act
